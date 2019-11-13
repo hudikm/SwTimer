@@ -1,0 +1,3 @@
+SwTimer.cpp:10:6:bool SwTimer::isExpired()	24	static
+SwTimer.cpp:14:6:void SwTimer::startTimer(uint64_t)	32	static
+SwTimer.cpp:19:6:void SwTimer::restartTimer()	24	static
