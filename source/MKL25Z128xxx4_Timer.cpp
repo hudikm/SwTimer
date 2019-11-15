@@ -40,17 +40,37 @@
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
 #include "SwTimer.h"
+#include "Ticker.h"
 
 #define SYSTICK_MS 10U
 #define SYSTICK_TICKS CLOCK_GetFreq(kCLOCK_CoreSysClk)/(1000/(SYSTICK_MS))
 
 volatile uint64_t glTicks = 0;
-extern "C" void SysTick_Handler() {
-	++glTicks;
-}
+
 
 uint64_t getRunTimeInMs() {
 	return glTicks * SYSTICK_MS;
+}
+SwTimer swTimer1(&getRunTimeInMs);
+SwTimer swTimer2(&getRunTimeInMs);
+SwTimer swTimer3(&getRunTimeInMs);
+SwTimer swTimer4(&getRunTimeInMs);
+Ticker<5,&swTimer1,&swTimer2,&swTimer3,&swTimer4> ticker1;
+
+extern "C" void SysTick_Handler() {
+	++glTicks;
+	ticker1.checkExpiration();
+
+}
+
+void callback(SwTimer& swTimer){
+	PRINTF("Delay:%d\r\n",(unsigned int) swTimer.getDelayMs());
+}
+volatile int flag_i = 0;
+void callback2(SwTimer& swTimer){
+	flag_i++;
+	PRINTF("Temp delay:%d\r\n",(unsigned int) swTimer.getDelayMs());
+
 }
 /*
  * @brief   Application entry point.
@@ -69,16 +89,26 @@ int main(void) {
 	EnableIRQ(SysTick_IRQn);
 
 	PRINTF("Hello World\n");
-	SwTimer swTimer(&getRunTimeInMs);
 
-	swTimer.startTimer(500);
+	swTimer1.startTimer(501);
+	swTimer2.startTimer(1002);
+	swTimer2.setAutoReload(true);
+	swTimer3.startTimer(1503);
+	swTimer3.setAutoReload(true);
+	swTimer1.setCallbackFn(&callback);
+	swTimer2.setCallbackFn(&callback);
+	swTimer3.setCallbackFn(&callback);
 
-	do {
-		while (!swTimer.isExpired()) {
-		};
-		PRINTF("500MS");
-		swTimer.restartTimer();
-	} while (1);
+	void *pt;
+	{
+		SwTimer swtimerTemp(&getRunTimeInMs,true);
+		pt = (void *)&swtimerTemp;
+		swtimerTemp.setCallbackFn(&callback2);
+		swtimerTemp.startTimer(1000);
+		swtimerTemp.attach_to_ticker(ticker1);
+		while(flag_i<5);
+	}
+	memset(pt,0,sizeof(SwTimer));
 
 	/* Force the counter to be placed into memory. */
 	volatile static int i = 0;

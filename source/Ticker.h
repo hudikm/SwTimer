@@ -7,25 +7,57 @@
 
 #ifndef TICKER_H_
 #define TICKER_H_
-#include "SwTimer.h"
 
-//using f_GlTIME = uint64_t (*) (void); // Definovanie typu funkcie int fun_name(void);
-using f_Callback = void (*) (void);  // CallBack
-template<unsigned N>
-class Ticker {
+//#include <SwTimer.h>
+#include <TickerBase.h>
+
+template<unsigned N = 0, SwTimer* const ...Args>
+class Ticker: public TickerBase {
+private:
+	static const int size = sizeof...(Args);
+	static SwTimer* const swTimers[sizeof...(Args)];
+	static SwTimer* swTimersRunTime[N];
+
 public:
-	static Ticker* tickers[N];
-	/*! Constructor */
-	Ticker(f_GlTIME func) :GlTimeFn(func) {}; //Konstruktor
-    bool isExpired();
-    void attach_ms(f_Callback, uint64_t ms);
+
+	void checkExpiration() {
+		for (int i = 0; i < size; i++) {
+			swTimers[i]->hasExpired(true);
+		}
+
+		for (SwTimer* pt : swTimersRunTime) {
+			if (pt != nullptr) {
+				pt->hasExpired(true);
+			}
+		}
+	}
 
 private:
-    f_GlTIME GlTimeFn;  //Odkaz na funciu ktora vracia globalny cas
-    f_Callback CallBack;
-    uint64_t endTime; //Pomocna premnena
-    uint64_t _delayMs; //Perioda casovaca
+	virtual bool attach_timer(SwTimer* swtimer) override {
+		for (unsigned i = 0; i < N; i++) {
+			if (swTimersRunTime[i] == nullptr) {
+				swTimersRunTime[i] = swtimer;
+				return true;
+			}
+		}
+		return false;
+	}
 
+	virtual bool detach_timer(SwTimer* swtimer) override {
+		for (unsigned i = 0; i < N; i++) {
+			if (swTimersRunTime[i] == swtimer) {
+				swTimersRunTime[i] = nullptr;
+				return true;
+			}
+		}
+		return false;
+	}
 };
+
+template<unsigned N, SwTimer* const ...Args>
+SwTimer* const Ticker<N, Args...>::swTimers[sizeof...(Args)] = { Args... };
+
+template<unsigned N, SwTimer* const ...Args>
+SwTimer* Ticker<N, Args...>::swTimersRunTime[N] = { };
 
 #endif /* TICKER_H_ */

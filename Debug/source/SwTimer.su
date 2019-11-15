@@ -1,3 +1,9 @@
-SwTimer.cpp:10:6:bool SwTimer::isExpired()	24	static
-SwTimer.cpp:14:6:void SwTimer::startTimer(uint64_t)	32	static
-SwTimer.cpp:19:6:void SwTimer::restartTimer()	24	static
+SwTimer.cpp:10:6:bool SwTimer::hasExpired(bool)	32	static
+SwTimer.cpp:20:6:bool SwTimer::_hasExpired()	32	static
+SwTimer.cpp:32:6:void SwTimer::startTimer(uint64_t)	32	static
+SwTimer.cpp:38:6:void SwTimer::restartTimer()	24	static
+SwTimer.cpp:43:6:bool SwTimer::isAutoReload() const	16	static
+SwTimer.cpp:47:6:void SwTimer::setAutoReload(bool)	16	static
+SwTimer.cpp:51:10:uint64_t SwTimer::getDelayMs() const	24	static
+SwTimer.cpp:55:6:void SwTimer::setDelayMs(uint64_t)	32	static
+SwTimer.cpp:59:6:void SwTimer::setCallbackFn(SwTimer::f_callback)	16	static

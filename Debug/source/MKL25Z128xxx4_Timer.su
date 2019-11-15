@@ -2,7 +2,16 @@ core_cm0plus.h:745:22:void NVIC_EnableIRQ(IRQn_Type)	16	static
 core_cm0plus.h:804:22:void NVIC_SetPriority(IRQn_Type, uint32_t)	24	static
 core_cm0plus.h:885:26:uint32_t SysTick_Config(uint32_t)	16	static
 fsl_common.h:212:20:void EnableIRQ(IRQn_Type)	16	static
-SwTimer.h:18:5:SwTimer::SwTimer(f_GlTIME)	16	static
-MKL25Z128xxx4_Timer.cpp:48:17:void SysTick_Handler()	12	static
-MKL25Z128xxx4_Timer.cpp:52:10:uint64_t getRunTimeInMs()	20	static
-MKL25Z128xxx4_Timer.cpp:58:5:int main()	40	static
+SwTimer.h:18:2:SwTimer::SwTimer(SwTimer::f_GlTIME, bool)	32	static
+SwTimer.h:22:2:SwTimer::~SwTimer()	16	static
+SwTimer.h:37:7:void SwTimer::attach_to_ticker(TickerBase&)	16	static
+MKL25Z128xxx4_Timer.cpp:51:10:uint64_t getRunTimeInMs()	20	static
+MKL25Z128xxx4_Timer.cpp:60:17:void SysTick_Handler()	16	static
+MKL25Z128xxx4_Timer.cpp:66:6:void callback(SwTimer&)	24	static
+MKL25Z128xxx4_Timer.cpp:70:6:void callback2(SwTimer&)	24	static
+MKL25Z128xxx4_Timer.cpp:78:5:int main()	56	static
+Ticker.h:23:7:Args = {(& swTimer1), (& swTimer2), (& swTimer3), (& swTimer4)}]	40	static
+MKL25Z128xxx4_Timer.cpp:123:1:void __static_initialization_and_destruction_0(int, int)	16	static
+Ticker.h:36:15:Args = {(& swTimer1), (& swTimer2), (& swTimer3), (& swTimer4)}]	24	static
+Ticker.h:46:15:Args = {(& swTimer1), (& swTimer2), (& swTimer3), (& swTimer4)}]	24	static
+MKL25Z128xxx4_Timer.cpp:123:1:cpp)	8	static

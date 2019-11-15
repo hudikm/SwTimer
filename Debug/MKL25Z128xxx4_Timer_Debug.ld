@@ -6,7 +6,7 @@
  * Generated linker script file for MKL25Z128xxx4
  * Created from linkscript.ldt by FMCreateLinkLibraries
  * Using Freemarker v2.3.23
- * MCUXpresso IDE v11.0.1 [Build 2563] [2019-09-01] on Nov 13, 2019 2:58:06 PM
+ * MCUXpresso IDE v11.0.1 [Build 2563] [2019-09-01] on Nov 15, 2019 9:41:48 AM
  */
 
 INCLUDE "MKL25Z128xxx4_Timer_Debug_library.ld"
